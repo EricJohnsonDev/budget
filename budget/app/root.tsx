@@ -9,6 +9,14 @@ import {
 
 import type { Route } from "./+types/root";
 import "./app.css";
+import BudgetToolbar from "./partials/toolbar";
+
+/* Material UI default font */
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
+import { CssBaseline } from "@mui/material";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -20,6 +28,10 @@ export const links: Route.LinksFunction = () => [
   {
     rel: "stylesheet",
     href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
+  },
+  {
+    rel: "stylesheet",
+    href: "https://fonts.googleapis.com/icon?family=Material+Icons",
   },
 ];
 
@@ -33,6 +45,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
+        <CssBaseline />
+        <BudgetToolbar />
         {children}
         <ScrollRestoration />
         <Scripts />

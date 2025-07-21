@@ -1,13 +1,16 @@
 import type { Route } from "./+types/home";
-import { Welcome } from "../welcome/welcome";
 
 export function meta({}: Route.MetaArgs) {
   return [
     { title: "EDJ Dev | Budget" },
-    { name: "description", content: "Welcome to React Router!" },
+    { name: "home", content: "EDJ Dev Budget homepage" },
   ];
 }
 
 export default function Home() {
-  return <Welcome />;
+  return (
+    <main className="flex items-center justify-center pt-16 pb-4">
+      Home sweet home
+    </main>
+  );  
 }
