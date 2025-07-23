@@ -15,7 +15,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Icon from '@mui/material/Icon';
 
-const drawerWidth = 200;
+const drawerWidth = 240;
 
 export default function BudgetToolbar() {
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -72,22 +72,16 @@ export default function BudgetToolbar() {
   );
 
     return (
-    <Box sx={{ display: 'flex' }}>
+    <Box className='flex'>
       <CssBaseline />
-      <AppBar
-        position="fixed"
-        sx={{
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-          ml: { sm: `${drawerWidth}px` },
-        }}
-      >
+      <AppBar className='fixed sm:!w-[calc(100%-240px)] sm:ml-[240px]'>
         <Toolbar>
           <IconButton
+            className='!mr-2 sm:!hidden'
             color="inherit"
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: 'none' } }}
           >
             <MenuIcon />
           </IconButton>
@@ -98,7 +92,7 @@ export default function BudgetToolbar() {
       </AppBar>
       <Box
         component="nav"
-        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+        className='sm:w-[240px] sm:shrink-0'
       >
         
         <Drawer
@@ -106,10 +100,7 @@ export default function BudgetToolbar() {
           open={mobileOpen}
           onTransitionEnd={handleDrawerTransitionEnd}
           onClose={handleDrawerClose}
-          sx={{
-            display: { xs: 'block', sm: 'none' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
-          }}
+          className='block sm:hidden *:w-[240px] *:box-border'
           slotProps={{
             root: {
               keepMounted: true, // Better open performance on mobile.
@@ -121,10 +112,7 @@ export default function BudgetToolbar() {
         
         <Drawer
           variant="permanent"
-          sx={{
-            display: { xs: 'none', sm: 'block' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
-          }}
+          className='hidden sm:block *:w-[240px] *:box-border'
           open
         >
           {drawer}
@@ -132,7 +120,7 @@ export default function BudgetToolbar() {
       </Box>
       <Box
         component="main"
-        sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
+        className='grow-1 p-3 sm:w-[calc(100%-240px)]'
       >
         <Toolbar />
         </Box>
