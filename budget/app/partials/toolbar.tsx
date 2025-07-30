@@ -1,7 +1,6 @@
 import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
-import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
@@ -15,8 +14,6 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Icon from "@mui/material/Icon";
 import { useTheme } from "@mui/material/styles";
-
-const drawerWidth = 240;
 
 export default function BudgetToolbar() {
   const muiTheme = useTheme();
@@ -38,6 +35,8 @@ export default function BudgetToolbar() {
       setMobileOpen(!mobileOpen);
     }
   };
+
+  const drawerWidth = "w-[240px]";
 
   const drawer = (
     <div>
@@ -75,9 +74,8 @@ export default function BudgetToolbar() {
   );
 
   return (
-    <Box className="flex">
-      <CssBaseline />
-      <AppBar className={`fixed ${toolbarZee}`}>
+    <Box>
+      <AppBar className={`${toolbarZee}`}>
         <Toolbar>
           <IconButton
             className="!mr-2 sm:!hidden"
@@ -93,13 +91,13 @@ export default function BudgetToolbar() {
           </Typography>
         </Toolbar>
       </AppBar>
-      <Box component="nav" className="sm:w-[240px] sm:shrink-0">
+      <Box component="nav" className={`sm:${drawerWidth} sm:shrink-0`}>
         <Drawer
           variant="temporary"
           open={mobileOpen}
           onTransitionEnd={handleDrawerTransitionEnd}
           onClose={handleDrawerClose}
-          className="block sm:hidden [&_.MuiDrawer-paper]:box-border [&_.MuiDrawer-paper]:w-[240px]"
+          className={`sm:hidden [&_.MuiDrawer-paper]:box-border [&_.MuiDrawer-paper]:${drawerWidth}`}
           slotProps={{
             root: {
               keepMounted: true, // Better open performance on mobile.
@@ -111,14 +109,11 @@ export default function BudgetToolbar() {
 
         <Drawer
           variant="permanent"
-          className="hidden *:box-border *:w-[240px] sm:block"
+          className={`hidden *:box-border *:${drawerWidth} sm:block`}
           open
         >
           {drawer}
         </Drawer>
-      </Box>
-      <Box component="main" className="grow-1 p-3 sm:w-[calc(100%-240px)]">
-        <Toolbar />
       </Box>
     </Box>
   );

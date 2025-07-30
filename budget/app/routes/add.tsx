@@ -10,11 +10,9 @@ export function meta({}: Route.MetaArgs) {
 
 export default function Add() {
   return (
-    <main className="flex items-center justify-center pt-16 pb-4">
-      <Button variant="contained" onClick={addData}>
-        Add test data
-      </Button>
-    </main>
+    <Button variant="contained" onClick={addData}>
+      Add test data
+    </Button>
   );
 }
 
