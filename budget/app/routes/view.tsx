@@ -1,5 +1,15 @@
+import * as React from "react";
 import Button from "@mui/material/Button";
 import type { Route } from "./+types/home";
+import Stack from "@mui/material/Stack";
+import ToggleButton from "@mui/material/ToggleButton";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import {
+  SearchFilter,
+  DateFilter,
+  CategoryFilter,
+  AmountFilter,
+} from "~/partials/filters";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -8,12 +18,50 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
-export default function Add() {
+export default function View() {
+  const [filters, setFilters] = React.useState(["date"]);
+
+  const handleFilter = (
+    event: React.MouseEvent<HTMLElement>,
+    newFilter: string[],
+  ) => {
+    if (newFilter?.length !== 0) {
+      setFilters(newFilter);
+    }
+  };
+
   return (
     <main className="flex items-center justify-center pt-16 pb-4">
-      <Button variant="contained" onClick={getData}>
-        Get test data
-      </Button>
+      <Stack spacing={2}>
+        <ToggleButtonGroup
+          color="primary"
+          value={filters}
+          onChange={handleFilter}
+          aria-label="view filter"
+        >
+          <ToggleButton value="date" aria-label="date filter">
+            Date
+          </ToggleButton>
+          <ToggleButton value="category" aria-label="category filter">
+            Category
+          </ToggleButton>
+          <ToggleButton value="amount" aria-label="amount filter">
+            Amount
+          </ToggleButton>
+          <ToggleButton value="search" aria-label="search filter">
+            Search
+          </ToggleButton>
+        </ToggleButtonGroup>
+
+        <DateFilter visible={filters.includes("date")} />
+        <CategoryFilter visible={filters.includes("category")} />
+        <AmountFilter visible={filters.includes("amount")} />
+        <SearchFilter visible={filters.includes("search")} />
+
+        <Button variant="contained" onClick={getData}>
+          Get test data
+        </Button>
+      </Stack>
     </main>
   );
 }
