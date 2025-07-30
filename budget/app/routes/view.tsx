@@ -4,6 +4,7 @@ import type { Route } from "./+types/home";
 import Stack from "@mui/material/Stack";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import Icon from "@mui/material/Icon";
 import {
   SearchFilter,
   DateFilter,
@@ -51,23 +52,24 @@ export default function View() {
           Search
         </ToggleButton>
       </ToggleButtonGroup>
+      <form action={getData}>
+        <DateFilter visible={filters.includes("date")} />
+        <CategoryFilter visible={filters.includes("category")} />
+        <AmountFilter visible={filters.includes("amount")} />
+        <SearchFilter visible={filters.includes("search")} />
 
-      <DateFilter visible={filters.includes("date")} />
-      <CategoryFilter visible={filters.includes("category")} />
-      <AmountFilter visible={filters.includes("amount")} />
-      <SearchFilter visible={filters.includes("search")} />
-
-      <Button variant="contained" onClick={getData}>
-        Get test data
-      </Button>
+        <Button type="submit" className="max-w-28" variant="contained">
+          <Icon>search</Icon>
+        </Button>
+      </form>
     </Stack>
   );
 }
 
-async function getData() {
+async function getData(formData: FormData) {
   const params = new URLSearchParams();
-  params.append("start", "01-01-2000");
-  params.append("end", "01-02-2000");
+  params.append("start", formData.get("startDate"));
+  params.append("end", formData.get("endDate"));
 
   const url = `http://localhost:8080/expense/date?${params}`;
 

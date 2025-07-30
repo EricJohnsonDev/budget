@@ -1,4 +1,4 @@
-import Grid from "@mui/material/Grid";
+import { TextField } from "@mui/material";
 
 interface Props {
   visible: boolean;
@@ -6,13 +6,26 @@ interface Props {
 
 export function SearchFilter({ visible }: Props) {
   if (visible) {
-    return <div>text filter</div>;
+    return <div>search filter</div>;
   }
 }
 
 export function DateFilter({ visible }: Props) {
   if (visible) {
-    return <div>date filter</div>;
+    return (
+      <section>
+        <TextField
+          name="startDate"
+          label="Start Date"
+          helperText="MM-dd-yyyy"
+        ></TextField>
+        <TextField
+          name="endDate"
+          label="End Date"
+          helperText="MM-dd-yyyy"
+        ></TextField>
+      </section>
+    );
   }
 }
 
