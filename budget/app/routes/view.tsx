@@ -68,8 +68,8 @@ export default function View() {
 
 async function getData(formData: FormData) {
   const params = new URLSearchParams();
-  params.append("start", formData.get("startDate"));
-  params.append("end", formData.get("endDate"));
+  params.append("start", formData.get("startDate") as string);
+  params.append("end", formData.get("endDate") as string);
 
   const url = `http://localhost:8080/expense/date?${params}`;
 
