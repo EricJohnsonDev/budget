@@ -1,4 +1,4 @@
-import Button from '@mui/material/Button';
+import Button from "@mui/material/Button";
 import type { Route } from "./+types/home";
 
 export function meta({}: Route.MetaArgs) {
@@ -11,11 +11,11 @@ export function meta({}: Route.MetaArgs) {
 export default function Add() {
   return (
     <main className="flex items-center justify-center pt-16 pb-4">
-        <Button variant="contained" onClick={getData}>
-            Get test data 
-        </Button>
+      <Button variant="contained" onClick={getData}>
+        Get test data
+      </Button>
     </main>
-  );  
+  );
 }
 
 async function getData() {
@@ -27,13 +27,12 @@ async function getData() {
 
   try {
     const response = await fetch(url);
-    if(!response.ok) {
+    if (!response.ok) {
       throw new Error(`Response status: ${response.status}`);
     }
 
     const json = await response.json();
     console.log(json);
-
   } catch (error) {
     console.error(error);
   }
