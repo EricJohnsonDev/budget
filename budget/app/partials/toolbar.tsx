@@ -13,11 +13,8 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Icon from "@mui/material/Icon";
-import { useTheme } from "@mui/material/styles";
 
 export default function BudgetToolbar() {
-  const muiTheme = useTheme();
-  const toolbarZee = "!z-[" + (muiTheme.zIndex.drawer + 1) + "]"; // !important
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [isClosing, setIsClosing] = React.useState(false);
 
@@ -35,8 +32,6 @@ export default function BudgetToolbar() {
       setMobileOpen(!mobileOpen);
     }
   };
-
-  const drawerWidth = "w-[240px]";
 
   const drawer = (
     <div>
@@ -75,7 +70,8 @@ export default function BudgetToolbar() {
 
   return (
     <Box>
-      <AppBar className={`${toolbarZee}`}>
+      {/* z-index one (1) higher than MUI drawer */}
+      <AppBar className="!z-1201"> 
         <Toolbar>
           <IconButton
             className="!mr-2 sm:!hidden"
@@ -91,13 +87,13 @@ export default function BudgetToolbar() {
           </Typography>
         </Toolbar>
       </AppBar>
-      <Box component="nav" className={`sm:${drawerWidth} sm:shrink-0`}>
+      <Box component="nav" className="sm:w-60 sm:shrink-0">
         <Drawer
           variant="temporary"
           open={mobileOpen}
           onTransitionEnd={handleDrawerTransitionEnd}
           onClose={handleDrawerClose}
-          className={`sm:hidden [&_.MuiDrawer-paper]:box-border [&_.MuiDrawer-paper]:${drawerWidth}`}
+          className="sm:hidden [&_.MuiDrawer-paper]:box-border [&_.MuiDrawer-paper]:w-60"
           slotProps={{
             root: {
               keepMounted: true, // Better open performance on mobile.
@@ -109,7 +105,7 @@ export default function BudgetToolbar() {
 
         <Drawer
           variant="permanent"
-          className={`hidden *:box-border *:${drawerWidth} sm:block`}
+          className="hidden *:box-border *:w-60 sm:block"
           open
         >
           {drawer}
