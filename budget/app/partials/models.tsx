@@ -4,6 +4,6 @@ export interface Tx_expenses {
   Amount: string;
   Institution: string;
   Category: string;
-  Subcategory: {String: string, Valid: boolean};
+  Subcategory: string;
   Comment: string;
 }

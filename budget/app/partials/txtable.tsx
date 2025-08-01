@@ -71,7 +71,7 @@ export default function ViewTable({ rows }: Props) {
                 <TableCell>{row.Amount}</TableCell>
                 <TableCell>{row.Institution}</TableCell>
                 <TableCell>{row.Category}</TableCell>
-                <TableCell>{row.Subcategory.String}</TableCell>
+                <TableCell>{row.Subcategory}</TableCell>
                 <TableCell>{row.Comment}</TableCell>
               </TableRow>
             ))}
