@@ -48,11 +48,14 @@ export default function View() {
       }
 
       const json = await response.json();
-      console.log(json);
       setRows(json);
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const clearData = () => {
+    setRows([]);
   };
 
   return (
@@ -76,18 +79,29 @@ export default function View() {
           Search
         </ToggleButton>
       </ToggleButtonGroup>
-      <form action={getData}>
+      <form
+        action={getData}
+        className="relative max-w-4xl rounded-2xl border-2 p-2"
+      >
         <DateFilter visible={filters.includes("date")} />
         <CategoryFilter visible={filters.includes("category")} />
         <AmountFilter visible={filters.includes("amount")} />
         <SearchFilter visible={filters.includes("search")} />
 
-        <Button type="submit" className="max-w-28" variant="contained">
+        <Button hidden={rows.length === 0} onClick={() => setRows([])}>
+          <Icon>clear</Icon>
+          Clear results
+        </Button>
+
+        <Button
+          type="submit"
+          className="!absolute top-2 right-2 h-14"
+          variant="contained"
+        >
           <Icon>search</Icon>
         </Button>
       </form>
-
-      <ViewTable rows={rows}></ViewTable>
+      {rows.length > 0 && <ViewTable rows={rows}></ViewTable>}
     </Stack>
   );
 }
