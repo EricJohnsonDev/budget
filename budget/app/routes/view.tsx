@@ -88,7 +88,7 @@ export default function View() {
         <AmountFilter visible={filters.includes("amount")} />
         <SearchFilter visible={filters.includes("search")} />
 
-        <Button hidden={rows.length === 0} onClick={() => setRows([])}>
+        <Button hidden={rows && rows.length === 0} onClick={() => setRows([])}>
           <Icon>clear</Icon>
           Clear results
         </Button>
@@ -101,7 +101,7 @@ export default function View() {
           <Icon>search</Icon>
         </Button>
       </form>
-      {rows.length > 0 && <ViewTable rows={rows}></ViewTable>}
+      {rows && rows.length > 0 && <ViewTable rows={rows}></ViewTable>}
     </Stack>
   );
 }

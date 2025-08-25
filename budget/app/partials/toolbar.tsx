@@ -71,7 +71,7 @@ export default function BudgetToolbar() {
   return (
     <Box>
       {/* z-index one (1) higher than MUI drawer */}
-      <AppBar className="!z-1201"> 
+      <AppBar className="!z-1201">
         <Toolbar>
           <IconButton
             className="!mr-2 sm:!hidden"

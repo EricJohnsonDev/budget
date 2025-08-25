@@ -59,20 +59,20 @@ export default function Add() {
         </section>
       </form>
       <form>
-      <Button
-        component="label"
-        variant="contained"
-        startIcon={<CloudUploadIcon />}
-      >
-        Upload .csv
-        <VisuallyHiddenInput
-          type="file"
-          accept=".csv"
-          onChange={(event) => parseCsv(event.target.files)}
-          multiple
-        />
-      </Button>
-    </form>
+        <Button
+          component="label"
+          variant="contained"
+          startIcon={<CloudUploadIcon />}
+        >
+          Upload .csv
+          <VisuallyHiddenInput
+            type="file"
+            accept=".csv"
+            onChange={(event) => parseCsv(event.target.files)}
+            multiple
+          />
+        </Button>
+      </form>
     </Box>
   );
 }
@@ -99,9 +99,9 @@ async function addSingleExpense(formData: FormData) {
 }
 
 async function addMultipleExpenses(expenses: Tx_expenses[]) {
-const url = `http://localhost:8080/expense/bulkadd`;
+  const url = `http://localhost:8080/expense/bulkadd`;
 
-try {
+  try {
     const response = await fetch(url, {
       method: "POST",
       body: JSON.stringify(expenses),
@@ -138,24 +138,24 @@ async function parseCsv(files: FileList) {
 }
 
 function parseCsvToExpenses(csvStr: string) {
-    let expenses = [];
+  let expenses = [];
 
   let csvArray = csvStr.split("\r\n").map((row) => {
     return row.split(",");
   });
 
-for (let i = 1; i < csvArray.length; i++) {
+  for (let i = 1; i < csvArray.length; i++) {
     let newExpense: Tx_expenses = {
-        Date: csvArray[i][0],
-        Amount: csvArray[i][1],
-        Institution: csvArray[i][2],
-        Category: csvArray[i][3],
-        Subcategory: csvArray[i][4],
-        Comment: csvArray[i][5]
-    }
+      Date: csvArray[i][0],
+      Amount: csvArray[i][1],
+      Institution: csvArray[i][2],
+      Category: csvArray[i][3],
+      Subcategory: csvArray[i][4],
+      Comment: csvArray[i][5],
+    };
 
     expenses.push(newExpense);
-}
+  }
 
   console.log("Parsed csv as array: ", csvArray);
   console.log("expenses: ", JSON.stringify(expenses));
