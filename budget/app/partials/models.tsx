@@ -1,5 +1,5 @@
 export interface Tx_expenses {
-  ID: number;
+  ID?: number;
   Date: string;
   Amount: string;
   Institution: string;
