@@ -80,7 +80,6 @@ export default function Add() {
 async function addSingleExpense(formData: FormData) {
   const url = `http://localhost:8080/expense/add`;
   const expenses = Object.fromEntries(formData.entries());
-  console.log("Test: " + JSON.stringify(expenses));
 
   try {
     const response = await fetch(url, {
@@ -123,7 +122,6 @@ async function parseCsv(files: FileList) {
 
   reader.onload = () => {
     result += reader.result;
-    console.log("Result in onload: ", result);
     parseCsvToExpenses(result);
   };
   reader.onerror = () => {
@@ -133,8 +131,6 @@ async function parseCsv(files: FileList) {
   for (let i = 0; i < files.length; i++) {
     reader.readAsText(files[i]);
   }
-
-  console.log("Result at end of function: ", result);
 }
 
 function parseCsvToExpenses(csvStr: string) {
@@ -157,7 +153,5 @@ function parseCsvToExpenses(csvStr: string) {
     expenses.push(newExpense);
   }
 
-  console.log("Parsed csv as array: ", csvArray);
-  console.log("expenses: ", JSON.stringify(expenses));
   addMultipleExpenses(expenses);
 }
