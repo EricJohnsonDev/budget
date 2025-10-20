@@ -4,7 +4,12 @@ export default defineConfig({
   test: {
     environment: "jsdom",
     coverage: {
-      exclude: ['**/build/', 'react-router.config.ts', '**/.react-router/', ...configDefaults.exclude],
+      exclude: [
+        "**/build/",
+        "react-router.config.ts",
+        "**/.react-router/",
+        ...configDefaults.exclude,
+      ],
     },
   },
 });

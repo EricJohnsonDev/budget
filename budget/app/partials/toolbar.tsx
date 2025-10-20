@@ -78,6 +78,7 @@ export default function BudgetToolbar() {
             color="inherit"
             aria-label="open drawer"
             edge="start"
+            data-testid="navIcon"
             onClick={handleDrawerToggle}
           >
             <MenuIcon />
@@ -94,6 +95,7 @@ export default function BudgetToolbar() {
           onTransitionEnd={handleDrawerTransitionEnd}
           onClose={handleDrawerClose}
           className="sm:hidden [&_.MuiDrawer-paper]:box-border [&_.MuiDrawer-paper]:w-60"
+          data-testid="mobileDrawer"
           slotProps={{
             root: {
               keepMounted: true, // Better open performance on mobile.
@@ -106,7 +108,8 @@ export default function BudgetToolbar() {
         <Drawer
           variant="permanent"
           className="hidden *:box-border *:w-60 sm:block"
-          open
+          data-testid="desktopDrawer"
+          open={!mobileOpen}
         >
           {drawer}
         </Drawer>
