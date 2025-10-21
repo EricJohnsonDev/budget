@@ -2,7 +2,6 @@ import { render, screen, cleanup, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expect, test, afterEach } from "vitest";
 import BudgetToolbar from "../toolbar";
-import Home from "../../routes/home";
 
 afterEach(() => {
   cleanup();
