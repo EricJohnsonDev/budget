@@ -53,7 +53,6 @@ export default function Home() {
       .replace("(", "-")
       .replace("$", "")
       .replace(",", "");
-    console.log(amount, " -> ", formattedAmount);
 
     return formattedAmount;
   };
