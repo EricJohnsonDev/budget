@@ -42,7 +42,6 @@ test("Entering multiple transactions via .csv yields a successful response", asy
     target: { files: [file] },
   });
 
-  
   // No real implementation to test, so checking console
   await waitFor(() => {
     expect(consoleMock).toHaveBeenCalledOnce();

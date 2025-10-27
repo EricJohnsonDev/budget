@@ -2,68 +2,11 @@ import { render, screen, cleanup } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expect, test, afterEach } from "vitest";
 import ViewTable from "../txtable";
+import { createIncrementalTestRows } from "~/mocks/data";
 
 afterEach(() => {
   cleanup();
 });
-
-const createTestRow = (
-  date: string,
-  amount: string,
-  institution: string,
-  category: string,
-  subcategory: string,
-  comment: string,
-) => {
-  return {
-    Date: date,
-    Amount: amount,
-    Institution: institution,
-    Category: category,
-    Subcategory: subcategory,
-    Comment: comment,
-  };
-};
-
-const createIncrementalTestRows = (
-  count: number,
-  date: string,
-  amount: string,
-  institution: string,
-  category: string,
-  subcategory: string,
-  comment: string,
-) => {
-  let result = [];
-
-  for (let i = 0; i < count; i++) {
-    let d = new Date(date);
-    d.setDate(d.getDate() + i);
-    let newDate = formatDate(d.getFullYear(), d.getMonth(), d.getDate());
-
-    let amt = Number(amount) + i;
-
-    result.push(
-      createTestRow(
-        newDate,
-        String(amt.toFixed(2)),
-        institution,
-        category,
-        subcategory,
-        comment,
-      ),
-    );
-  }
-
-  return result;
-};
-
-const formatDate = (year: number, month: number, day: number) => {
-  const fMonth = ("0" + (month + 1)).slice(-2);
-  const fDay = ("0" + day).slice(-2);
-
-  return year + "-" + fMonth + "-" + fDay;
-};
 
 test("Single expense can be viewed in table", () => {
   // Note: The date conversion gets a bit funky if the month has a leading zero, so it's omitted

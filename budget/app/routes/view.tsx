@@ -54,10 +54,6 @@ export default function View() {
     }
   };
 
-  const clearData = () => {
-    setRows([]);
-  };
-
   return (
     <Stack spacing={2}>
       <ToggleButtonGroup
@@ -82,6 +78,7 @@ export default function View() {
       <form
         action={getData}
         className="relative max-w-4xl rounded-2xl border-2 p-2"
+        data-testid="filterForm"
       >
         <DateFilter visible={filters.includes("date")} />
         <CategoryFilter visible={filters.includes("category")} />

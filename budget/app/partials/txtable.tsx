@@ -48,7 +48,7 @@ export default function ViewTable({ rows }: Props) {
   );
 
   return (
-    <Box>
+    <Box data-testid="viewTableOuterBox">
       <ViewTablePaginiation />
       <TableContainer className="border">
         <Table size="small">
