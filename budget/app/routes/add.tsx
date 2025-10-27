@@ -120,6 +120,10 @@ async function parseCsv(files: FileList) {
   const reader = new FileReader();
   let result = "";
 
+  for (let i = 0; i < files.length; i++) {
+    reader.readAsText(files[i]);
+  }
+
   reader.onload = () => {
     result += reader.result;
     parseCsvToExpenses(result);
@@ -127,10 +131,6 @@ async function parseCsv(files: FileList) {
   reader.onerror = () => {
     console.log("Error reading the file.");
   };
-
-  for (let i = 0; i < files.length; i++) {
-    reader.readAsText(files[i]);
-  }
 }
 
 function parseCsvToExpenses(csvStr: string) {

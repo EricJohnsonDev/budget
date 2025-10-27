@@ -33,10 +33,6 @@ afterEach(() => {
   cleanup();
 });
 
-vi.mock("@/expense/date", () => ({
-  updateData: vi.fn().mockResolvedValue({ mockResponse }),
-}));
-
 test("Total expenses shows expected value", async () => {
   const user = userEvent.setup();
   render(<Home></Home>);

@@ -11,5 +11,8 @@ export default defineConfig({
         ...configDefaults.exclude,
       ],
     },
+    setupFiles: [
+        "app/vitest.setup.ts",
+      ],
   },
 });
