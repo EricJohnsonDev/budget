@@ -41,18 +41,9 @@ export default function BudgetToolbar() {
         <ListItem key="Home" disablePadding>
           <ListItemButton href="/">
             <ListItemIcon>
-              <Icon>home</Icon>
+              <Icon>query_stats</Icon>
             </ListItemIcon>
             <ListItemText primary="Home" />
-          </ListItemButton>
-        </ListItem>
-
-        <ListItem key="View" disablePadding>
-          <ListItemButton href="view">
-            <ListItemIcon>
-              <Icon>search</Icon>
-            </ListItemIcon>
-            <ListItemText primary="View" />
           </ListItemButton>
         </ListItem>
 

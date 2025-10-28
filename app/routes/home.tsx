@@ -1,10 +1,19 @@
 import type { Route } from "./+types/home";
 import * as React from "react";
 import Box from "@mui/material/Box";
-import { TextField } from "@mui/material";
 import Button from "@mui/material/Button";
-import RefreshIcon from "@mui/icons-material/Refresh";
 import type { Tx_expenses } from "~/partials/models";
+import Stack from "@mui/material/Stack";
+import ToggleButton from "@mui/material/ToggleButton";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import Icon from "@mui/material/Icon";
+import {
+  SearchFilter,
+  DateFilter,
+  CategoryFilter,
+  AmountFilter,
+} from "~/partials/filters";
+import ViewTable from "~/partials/txtable";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -15,6 +24,8 @@ export function meta({}: Route.MetaArgs) {
 
 export default function Home() {
   const [sumExpenses, setSumExpenses] = React.useState(0);
+  const [filters, setFilters] = React.useState(["date"]);
+  const [rows, setRows] = React.useState<Tx_expenses[]>([]);
 
   const updateData = async (formData: FormData) => {
     const params = new URLSearchParams();
@@ -58,30 +69,75 @@ export default function Home() {
   };
 
   const refreshDashboard = (expensesIn: Tx_expenses[]) => {
+    setRows(expensesIn);
     calcSumExpenses(expensesIn);
+  };
+
+  const clearDisplayedData = () => {
+    setRows([]);
+    calcSumExpenses([]);
+  };
+
+  const handleFilter = (
+    event: React.MouseEvent<HTMLElement>,
+    newFilter: string[],
+  ) => {
+    if (newFilter?.length !== 0) {
+      setFilters(newFilter);
+    }
   };
 
   return (
     <Box>
-      <h1>Dashboard</h1>
-      <form action={updateData}>
-        <TextField
-          name="startDate"
-          label="Start Date"
-          helperText="MM-dd-yyyy"
-        ></TextField>
-        <TextField
-          name="endDate"
-          label="End Date"
-          helperText="MM-dd-yyyy"
-        ></TextField>
-        <Button
-          type="submit"
-          variant="contained"
-          className="h-16"
-          startIcon={<RefreshIcon />}
-        ></Button>
-      </form>
+      <Stack spacing={2}>
+        <ToggleButtonGroup
+          color="primary"
+          value={filters}
+          onChange={handleFilter}
+          aria-label="view filter"
+        >
+          <ToggleButton value="date" aria-label="date filter">
+            Date
+          </ToggleButton>
+          <ToggleButton value="category" aria-label="category filter">
+            Category
+          </ToggleButton>
+          <ToggleButton value="amount" aria-label="amount filter">
+            Amount
+          </ToggleButton>
+          <ToggleButton value="search" aria-label="search filter">
+            Search
+          </ToggleButton>
+        </ToggleButtonGroup>
+        <form
+          action={updateData}
+          className="relative max-w-4xl rounded-2xl border-2 p-2"
+          data-testid="filterForm"
+        >
+          <DateFilter visible={filters.includes("date")} />
+          <CategoryFilter visible={filters.includes("category")} />
+          <AmountFilter visible={filters.includes("amount")} />
+          <SearchFilter visible={filters.includes("search")} />
+
+          <Button
+            hidden={rows && rows.length === 0}
+            onClick={() => clearDisplayedData()}
+          >
+            <Icon>clear</Icon>
+            Clear results
+          </Button>
+
+          <Button
+            type="submit"
+            className="!absolute top-2 right-2 h-14"
+            variant="contained"
+            data-testid="searchButton"
+          >
+            <Icon>search</Icon>
+          </Button>
+        </form>
+        {rows && rows.length > 0 && <ViewTable rows={rows}></ViewTable>}
+      </Stack>
       <p>Total Expenses: {sumExpenses}</p>
     </Box>
   );

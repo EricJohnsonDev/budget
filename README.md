@@ -1,6 +1,6 @@
 # Unnamed Personal Finance Tracker
 
-A simple finance tracker intended for my personal use (for now)  
+A simple finance tracker intended for my personal use (for now)
 
 ## Featured Tooling
 
