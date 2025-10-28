@@ -24,7 +24,6 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function Home() {
-  const [sumExpenses, setSumExpenses] = React.useState(0);
   const [searchFilters, setSearchFilters] = React.useState(["date"]);
   const [viewFilters, setViewFilters] = React.useState(["dashboard"]);
   const [rows, setRows] = React.useState<Tx_expenses[]>([]);
@@ -49,35 +48,12 @@ export default function Home() {
     }
   };
 
-  const calcSumExpenses = (expensesIn: Tx_expenses[]) => {
-    let result = 0;
-
-    for (let i = 0; i < expensesIn.length; i++) {
-      let amount = parseFloat(formatAmount(expensesIn[i].Amount));
-      result += amount;
-    }
-
-    setSumExpenses(result);
-  };
-
-  const formatAmount = (amount: string) => {
-    let formattedAmount = amount
-      .replace(")", "")
-      .replace("(", "-")
-      .replace("$", "")
-      .replace(",", "");
-
-    return formattedAmount;
-  };
-
   const refreshDashboard = (expensesIn: Tx_expenses[]) => {
     setRows(expensesIn);
-    calcSumExpenses(expensesIn);
   };
 
   const clearDisplayedData = () => {
     setRows([]);
-    calcSumExpenses([]);
   };
 
   const handleSearchFilter = (
@@ -170,7 +146,10 @@ export default function Home() {
           ></ViewTable>
         )}
         {rows && rows.length > 0 && (
-          <Dashboard visible={viewFilters.includes("dashboard")}></Dashboard>
+          <Dashboard
+            visible={viewFilters.includes("dashboard")}
+            rows={rows}
+          ></Dashboard>
         )}
       </Stack>
     </Box>
