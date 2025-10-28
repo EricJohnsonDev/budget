@@ -14,6 +14,7 @@ import {
   AmountFilter,
 } from "~/partials/filters";
 import ViewTable from "~/partials/txtable";
+import Dashboard from "~/partials/dashboard";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -24,7 +25,8 @@ export function meta({}: Route.MetaArgs) {
 
 export default function Home() {
   const [sumExpenses, setSumExpenses] = React.useState(0);
-  const [filters, setFilters] = React.useState(["date"]);
+  const [searchFilters, setSearchFilters] = React.useState(["date"]);
+  const [viewFilters, setViewFilters] = React.useState(["dashboard"]);
   const [rows, setRows] = React.useState<Tx_expenses[]>([]);
 
   const updateData = async (formData: FormData) => {
@@ -78,12 +80,21 @@ export default function Home() {
     calcSumExpenses([]);
   };
 
-  const handleFilter = (
+  const handleSearchFilter = (
     event: React.MouseEvent<HTMLElement>,
     newFilter: string[],
   ) => {
-    if (newFilter?.length !== 0) {
-      setFilters(newFilter);
+    if (newFilter.length) {
+      setSearchFilters(newFilter);
+    }
+  };
+
+  const handleViewFilter = (
+    event: React.MouseEvent<HTMLElement>,
+    newFilter: string[],
+  ) => {
+    if (newFilter.length) {
+      setViewFilters(newFilter);
     }
   };
 
@@ -92,8 +103,8 @@ export default function Home() {
       <Stack spacing={2}>
         <ToggleButtonGroup
           color="primary"
-          value={filters}
-          onChange={handleFilter}
+          value={searchFilters}
+          onChange={handleSearchFilter}
           aria-label="view filter"
         >
           <ToggleButton value="date" aria-label="date filter">
@@ -109,15 +120,31 @@ export default function Home() {
             Search
           </ToggleButton>
         </ToggleButtonGroup>
+
+        <ToggleButtonGroup
+          color="primary"
+          exclusive
+          value={viewFilters}
+          onChange={handleViewFilter}
+          aria-label="report style filter"
+        >
+          <ToggleButton value="dashboard" aria-label="dashboard view filter">
+            Dashboard
+          </ToggleButton>
+          <ToggleButton value="table" aria-label="table view filter">
+            Table
+          </ToggleButton>
+        </ToggleButtonGroup>
+
         <form
           action={updateData}
           className="relative max-w-4xl rounded-2xl border-2 p-2"
           data-testid="filterForm"
         >
-          <DateFilter visible={filters.includes("date")} />
-          <CategoryFilter visible={filters.includes("category")} />
-          <AmountFilter visible={filters.includes("amount")} />
-          <SearchFilter visible={filters.includes("search")} />
+          <DateFilter visible={searchFilters.includes("date")} />
+          <CategoryFilter visible={searchFilters.includes("category")} />
+          <AmountFilter visible={searchFilters.includes("amount")} />
+          <SearchFilter visible={searchFilters.includes("search")} />
 
           <Button
             hidden={rows && rows.length === 0}
@@ -136,9 +163,16 @@ export default function Home() {
             <Icon>search</Icon>
           </Button>
         </form>
-        {rows && rows.length > 0 && <ViewTable rows={rows}></ViewTable>}
+        {rows && rows.length > 0 && (
+          <ViewTable
+            visible={viewFilters.includes("table")}
+            rows={rows}
+          ></ViewTable>
+        )}
+        {rows && rows.length > 0 && (
+          <Dashboard visible={viewFilters.includes("dashboard")}></Dashboard>
+        )}
       </Stack>
-      <p>Total Expenses: {sumExpenses}</p>
     </Box>
   );
 }

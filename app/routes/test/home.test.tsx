@@ -1,55 +1,13 @@
 import { render, screen, cleanup, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { expect, test, afterEach, vi, beforeAll, afterAll } from "vitest";
-import { setupServer } from "msw/node";
-import { http, HttpResponse } from "msw";
+import { expect, test, afterEach } from "vitest";
 import Home from "../home";
 
-const mockResponse = [
-  {
-    Date: "2000-01-01",
-    Amount: "$29.42",
-    Institution: "First National Test",
-    Category: "Other",
-    Comment: "",
-  },
-];
-
-export const restHandlers = [
-  http.get("http://localhost:8080/expense/date", () => {
-    return HttpResponse.json(mockResponse);
-  }),
-];
-
-const server = setupServer(...restHandlers);
-
-beforeAll(() => server.listen({ onUnhandledRequest: "error" }));
-
-afterAll(() => server.close());
-
 afterEach(() => {
-  // Reset handlers after each test for test isolation
-  server.resetHandlers();
   cleanup();
 });
 
-test("Total expenses shows expected value", async () => {
-  const user = userEvent.setup();
-  render(<Home></Home>);
-
-  const searchButton = screen.getByTestId("searchButton");
-  const total_expenses = screen.getByText("Total Expenses", {
-    exact: false,
-  }).innerHTML;
-
-  await user.click(searchButton);
-
-  waitFor(() => {
-    expect(total_expenses).toEqual("Total Expenses: 29.42");
-  });
-});
-
-test("Date filter is the only one selected by default", () => {
+test("Date filter is the only search filter selected by default", () => {
   render(<Home></Home>);
 
   const dateFilterButton = screen.getByLabelText("date filter");
@@ -105,7 +63,7 @@ test("Search filter can be selected and unselected", async () => {
   expect(searchFilterButton.getAttribute("aria-pressed")).toEqual("false");
 });
 
-test("At least one filter must be selected", async () => {
+test("At least one search filter must be selected", async () => {
   const user = userEvent.setup();
   render(<Home></Home>);
 
@@ -129,12 +87,12 @@ test("At least one filter must be selected", async () => {
   expect(categoryFilterButton.getAttribute("aria-pressed")).toEqual("true");
 });
 
-test("Button to clear table results only appears when table has data", async () => {
+test("Button to clear results only appears when data is populated", async () => {
   const user = userEvent.setup();
   render(<Home></Home>);
   const searchButton = screen.getByText("search");
   const clearResultsButton = screen.getByText("Clear results");
-  const viewTable = screen.queryByTestId("viewTableOuterBox");
+  const viewTable = screen.queryByTestId("txTableOuterBox");
 
   expect(clearResultsButton.hidden).toBe(true);
 
@@ -152,18 +110,78 @@ test("Button to clear table results only appears when table has data", async () 
   expect(viewTable).toBeNull();
 });
 
-test("View table appears when results return from search", async () => {
+test("When results return from search and table view filter is selected, only the transaction table appears", async () => {
   const user = userEvent.setup();
   render(<Home></Home>);
   const searchButton = screen.getByText("search");
-  const viewTable = screen.queryByTestId("viewTableOuterBox");
+  const tableViewFilterButton = screen.getByLabelText("table view filter");
+  const txTable = screen.queryByTestId("txTableOuterBox");
+  const dashboard = screen.queryByTestId("dashboardOuterBox");
 
-  expect(viewTable).toBeNull();
+  expect(txTable).toBeNull();
+  expect(dashboard).toBeNull();
 
+  await user.click(tableViewFilterButton);
   await user.click(searchButton);
 
   waitFor(() => {
-    expect(viewTable).not.toBeNull();
-    expect(viewTable?.getAttribute("hidden")).toBe("false");
+    expect(txTable).not.toBeNull();
+    expect(dashboard).toBeNull();
+    expect(txTable?.getAttribute("hidden")).toBe("false");
+  });
+});
+
+test("When results return from search and dashboard view filter is selected, only the dashboard appears", async () => {
+  const user = userEvent.setup();
+  render(<Home></Home>);
+  const searchButton = screen.getByText("search");
+  const txTable = screen.queryByTestId("txTableOuterBox");
+  const dashboard = screen.queryByTestId("dashboardOuterBox");
+
+  expect(txTable).toBeNull();
+  expect(dashboard).toBeNull();
+
+  // Dashboard view filter is selected by default
+  await user.click(searchButton);
+
+  waitFor(() => {
+    expect(dashboard).not.toBeNull();
+    expect(txTable).toBeNull();
+    expect(dashboard?.getAttribute("hidden")).toBe("false");
+  });
+});
+
+test("When data is populated, view can seamlessly switch between dashboard and table", async () => {
+  const user = userEvent.setup();
+  render(<Home></Home>);
+  const searchButton = screen.getByText("search");
+  const txTable = screen.queryByTestId("txTableOuterBox");
+  const dashboard = screen.queryByTestId("dashboardOuterBox");
+  const tableViewFilterButton = screen.getByLabelText("table view filter");
+  const dashboardViewFilterButton = screen.getByLabelText(
+    "dashboard view filter",
+  );
+
+  await user.click(searchButton);
+
+  // Dashboard view filter is selected by default
+  waitFor(() => {
+    expect(dashboard).not.toBeNull();
+    expect(txTable).toBeNull();
+    expect(dashboard?.getAttribute("hidden")).toBe("false");
+  });
+
+  await user.click(tableViewFilterButton);
+  waitFor(() => {
+    expect(txTable).not.toBeNull();
+    expect(dashboard).toBeNull();
+    expect(txTable?.getAttribute("hidden")).toBe("false");
+  });
+
+  await user.click(dashboardViewFilterButton);
+  waitFor(() => {
+    expect(dashboard).not.toBeNull();
+    expect(txTable).toBeNull();
+    expect(dashboard?.getAttribute("hidden")).toBe("false");
   });
 });

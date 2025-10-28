@@ -20,7 +20,7 @@ test("Single expense can be viewed in table", () => {
     "Test expense from txtable test suite",
   );
 
-  render(<ViewTable rows={testRows}></ViewTable>);
+  render(<ViewTable visible={true} rows={testRows}></ViewTable>);
 
   const colHeaders = screen.getAllByRole("columnheader");
   expect(colHeaders.length).toBe(6);
@@ -59,7 +59,7 @@ test("Multiple expenses are truncated by pagination", async () => {
     "Test expense from txtable test suite",
   );
 
-  render(<ViewTable rows={testRows}></ViewTable>);
+  render(<ViewTable visible={true} rows={testRows}></ViewTable>);
 
   let rows = screen.getAllByRole("row");
   // Length includes column headers, so our first 5 rows plus 1
@@ -83,7 +83,7 @@ test("Multiple expenses are navigable across multiple pages", async () => {
   );
 
   const user = userEvent.setup();
-  render(<ViewTable rows={testRows}></ViewTable>);
+  render(<ViewTable visible={true} rows={testRows}></ViewTable>);
 
   let rows = screen.getAllByRole("row");
   // Length includes column headers, so our first 5 rows plus 1
@@ -113,7 +113,7 @@ test("Rows per page can be updated appropriately", async () => {
   );
 
   const user = userEvent.setup();
-  render(<ViewTable rows={testRows}></ViewTable>);
+  render(<ViewTable visible={true} rows={testRows}></ViewTable>);
 
   let rows = screen.getAllByRole("row");
   // Length includes column headers, so our first 5 rows plus 1

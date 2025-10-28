@@ -10,10 +10,11 @@ import type { Tx_expenses } from "~/partials/models";
 import Box from "@mui/material/Box";
 
 interface Props {
+  visible: boolean;
   rows: Tx_expenses[];
 }
 
-export default function ViewTable({ rows }: Props) {
+export default function ViewTable({ visible, rows }: Props) {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [page, setPage] = React.useState(0);
 
@@ -46,39 +47,40 @@ export default function ViewTable({ rows }: Props) {
     page * rowsPerPage,
     page * rowsPerPage + rowsPerPage,
   );
-
-  return (
-    <Box data-testid="viewTableOuterBox">
-      <ViewTablePaginiation />
-      <TableContainer className="border">
-        <Table size="small">
-          <TableHead>
-            <TableRow>
-              <TableCell>Date</TableCell>
-              <TableCell>Amount</TableCell>
-              <TableCell>Institution</TableCell>
-              <TableCell>Category</TableCell>
-              <TableCell>Subcategory</TableCell>
-              <TableCell>Comment</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {visibleRows.map((row) => (
-              <TableRow key={row.ID}>
-                <TableCell component="th" scope="row">
-                  {row.Date}
-                </TableCell>
-                <TableCell>{row.Amount}</TableCell>
-                <TableCell>{row.Institution}</TableCell>
-                <TableCell>{row.Category}</TableCell>
-                <TableCell>{row.Subcategory}</TableCell>
-                <TableCell>{row.Comment}</TableCell>
+  if (visible) {
+    return (
+      <Box data-testid="txTableOuterBox">
+        <ViewTablePaginiation />
+        <TableContainer className="border">
+          <Table size="small">
+            <TableHead>
+              <TableRow>
+                <TableCell>Date</TableCell>
+                <TableCell>Amount</TableCell>
+                <TableCell>Institution</TableCell>
+                <TableCell>Category</TableCell>
+                <TableCell>Subcategory</TableCell>
+                <TableCell>Comment</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <ViewTablePaginiation />
-    </Box>
-  );
+            </TableHead>
+            <TableBody>
+              {visibleRows.map((row) => (
+                <TableRow key={row.ID}>
+                  <TableCell component="th" scope="row">
+                    {row.Date}
+                  </TableCell>
+                  <TableCell>{row.Amount}</TableCell>
+                  <TableCell>{row.Institution}</TableCell>
+                  <TableCell>{row.Category}</TableCell>
+                  <TableCell>{row.Subcategory}</TableCell>
+                  <TableCell>{row.Comment}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <ViewTablePaginiation />
+      </Box>
+    );
+  }
 }
