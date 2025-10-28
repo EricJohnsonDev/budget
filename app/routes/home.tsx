@@ -28,26 +28,29 @@ export default function Home() {
   const [viewFilters, setViewFilters] = React.useState(["dashboard"]);
   const [rows, setRows] = React.useState<Tx_expenses[]>([]);
 
-const submitFormTest = async () => {
-    const formData = new FormData(document.getElementById('filterForm') as HTMLFormElement);
+  const submitFormTest = async () => {
+    const formData = new FormData(
+      document.getElementById("filterForm") as HTMLFormElement,
+    );
     const params = new URLSearchParams();
+
     params.append("start", formData.get("startDate") as string);
     params.append("end", formData.get("endDate") as string);
 
     const url = `http://localhost:8080/expense/date?${params}`;
 
-    fetch(url).then(async response => {
+    fetch(url).then(async (response) => {
       const json = await response.json();
       refreshDashboard(json);
     });
-};
+  };
 
   const refreshDashboard = (expensesIn: Tx_expenses[]) => {
     setRows(expensesIn);
   };
 
   const clearDisplayedData = () => {
-    (document.getElementById('filterForm') as HTMLFormElement).reset();
+    (document.getElementById("filterForm") as HTMLFormElement).reset();
     setRows([]);
   };
 

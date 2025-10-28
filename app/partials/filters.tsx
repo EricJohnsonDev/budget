@@ -1,4 +1,7 @@
-import { TextField } from "@mui/material";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import dayjs from "dayjs";
 
 interface Props {
   visible: boolean;
@@ -14,19 +17,26 @@ export function SearchFilter({ visible }: Props) {
 
 export function DateFilter({ visible }: Props) {
   if (visible) {
+    let defaultStartDate = new Date();
+    defaultStartDate.setDate(1);
+
     return (
-      <section>
-        <TextField
-          name="startDate"
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <DatePicker
+          data-testid="dateFilterStart"
           label="Start Date"
-          helperText="MM-dd-yyyy"
-        ></TextField>
-        <TextField
-          name="endDate"
+          name="startDate"
+          format="MM-DD-YYYY"
+          defaultValue={dayjs(defaultStartDate)}
+        />
+        <DatePicker
           label="End Date"
-          helperText="MM-dd-yyyy"
-        ></TextField>
-      </section>
+          name="endDate"
+          format="MM-DD-YYYY"
+          defaultValue={dayjs(new Date())}
+          data-testid="dateFilterEnd"
+        />
+      </LocalizationProvider>
     );
   }
 }

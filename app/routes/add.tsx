@@ -6,6 +6,10 @@ import { styled } from "@mui/material/styles";
 import { TextField } from "@mui/material";
 import type { Route } from "./+types/home";
 import type { Tx_expenses } from "../partials/models";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import dayjs from "dayjs";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -34,11 +38,14 @@ export default function Add() {
           Add transaction(s)
         </Button>
         <section>
-          <TextField
-            name="Date"
-            label="Date"
-            helperText="MM-dd-yyyy"
-          ></TextField>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker
+              label=" Date"
+              name="Date"
+              format="MM-DD-YYYY"
+              defaultValue={dayjs(Date.now())}
+            />
+          </LocalizationProvider>
           <TextField name="Amount" label="Amount" helperText="$USD"></TextField>
           <TextField
             name="Institution"

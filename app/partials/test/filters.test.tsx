@@ -1,11 +1,15 @@
-import { render, screen } from "@testing-library/react";
-import { expect, test } from "vitest";
+import { cleanup, render, screen } from "@testing-library/react";
+import { afterEach, expect, test } from "vitest";
 import {
   AmountFilter,
   CategoryFilter,
   DateFilter,
   SearchFilter,
 } from "../filters";
+
+afterEach(() => {
+  cleanup();
+});
 
 test("Date filter can be hidden", () => {
   render(<DateFilter visible={false}></DateFilter>);
@@ -16,13 +20,17 @@ test("Date filter can be hidden", () => {
   expect(endDateFields.length).toBe(0);
 });
 
-test("Date filter includes Start and End Date fields", () => {
+test("Date filter includes Start and End fields", () => {
   render(<DateFilter visible></DateFilter>);
-  const startDate = screen.getByLabelText("Start Date");
-  const endDate = screen.getByLabelText("End Date");
+  const startDate = screen.getAllByLabelText("Start Date");
+  const endDate = screen.getAllByLabelText("End Date");
 
-  expect(startDate.localName).toEqual("input");
-  expect(endDate.localName).toEqual("input");
+  // Label above the input, and the input itself
+  expect(startDate.length).toBe(2);
+  expect(startDate[0].textContent).toMatch(/.*Start Date/);
+
+  expect(endDate.length).toBe(2);
+  expect(endDate[0].textContent).toMatch(/.*End Date/);
 });
 
 test("Search filter is not implemented", () => {
