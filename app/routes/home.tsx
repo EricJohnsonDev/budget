@@ -28,31 +28,26 @@ export default function Home() {
   const [viewFilters, setViewFilters] = React.useState(["dashboard"]);
   const [rows, setRows] = React.useState<Tx_expenses[]>([]);
 
-  const updateData = async (formData: FormData) => {
+const submitFormTest = async () => {
+    const formData = new FormData(document.getElementById('filterForm') as HTMLFormElement);
     const params = new URLSearchParams();
     params.append("start", formData.get("startDate") as string);
     params.append("end", formData.get("endDate") as string);
 
     const url = `http://localhost:8080/expense/date?${params}`;
 
-    try {
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error(`Response status: ${response.status}`);
-      }
-
+    fetch(url).then(async response => {
       const json = await response.json();
       refreshDashboard(json);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+    });
+};
 
   const refreshDashboard = (expensesIn: Tx_expenses[]) => {
     setRows(expensesIn);
   };
 
   const clearDisplayedData = () => {
+    (document.getElementById('filterForm') as HTMLFormElement).reset();
     setRows([]);
   };
 
@@ -113,8 +108,8 @@ export default function Home() {
         </ToggleButtonGroup>
 
         <form
-          action={updateData}
           className="relative max-w-4xl rounded-2xl border-2 p-2"
+          id="filterForm"
           data-testid="filterForm"
         >
           <DateFilter visible={searchFilters.includes("date")} />
@@ -131,7 +126,7 @@ export default function Home() {
           </Button>
 
           <Button
-            type="submit"
+            onClick={() => submitFormTest()}
             className="!absolute top-2 right-2 h-14"
             variant="contained"
             data-testid="searchButton"
