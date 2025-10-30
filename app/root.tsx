@@ -47,7 +47,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <body>
         <CssBaseline />
         <BudgetToolbar />
-        <main className="mt-16 p-6 sm:ml-60">{children}</main>
+        <main className="mt-16 p-6 md:ml-60">{children}</main>
         <ScrollRestoration />
         <Scripts />
       </body>

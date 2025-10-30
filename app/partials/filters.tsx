@@ -2,6 +2,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
+import { Stack } from "@mui/material";
 
 interface Props {
   visible: boolean;
@@ -22,20 +23,21 @@ export function DateFilter({ visible }: Props) {
 
     return (
       <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <DatePicker
-          data-testid="dateFilterStart"
-          label="Start Date"
-          name="startDate"
-          format="MM-DD-YYYY"
-          defaultValue={dayjs(defaultStartDate)}
-        />
-        <DatePicker
-          label="End Date"
-          name="endDate"
-          format="MM-DD-YYYY"
-          defaultValue={dayjs(new Date())}
-          data-testid="dateFilterEnd"
-        />
+        <Stack spacing={2} direction={{ sm: "row" }}>
+          <DatePicker
+            className="!pb-2 md:pb-0"
+            label="Start Date"
+            name="startDate"
+            format="MM-DD-YYYY"
+            defaultValue={dayjs(defaultStartDate)}
+          />
+          <DatePicker
+            label="End Date"
+            name="endDate"
+            format="MM-DD-YYYY"
+            defaultValue={dayjs(new Date())}
+          />
+        </Stack>
       </LocalizationProvider>
     );
   }

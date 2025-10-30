@@ -65,7 +65,7 @@ export default function BudgetToolbar() {
       <AppBar className="!z-1201">
         <Toolbar>
           <IconButton
-            className="!mr-2 sm:!hidden"
+            className="!mr-2 md:!hidden"
             color="inherit"
             aria-label="open drawer"
             edge="start"
@@ -79,13 +79,13 @@ export default function BudgetToolbar() {
           </Typography>
         </Toolbar>
       </AppBar>
-      <Box component="nav" className="sm:w-60 sm:shrink-0">
+      <Box component="nav" className="md:w-60 md:shrink-0">
         <Drawer
           variant="temporary"
           open={mobileOpen}
           onTransitionEnd={handleDrawerTransitionEnd}
           onClose={handleDrawerClose}
-          className="sm:hidden [&_.MuiDrawer-paper]:box-border [&_.MuiDrawer-paper]:w-60"
+          className="md:hidden [&_.MuiDrawer-paper]:box-border [&_.MuiDrawer-paper]:w-60"
           data-testid="mobileDrawer"
           slotProps={{
             root: {
@@ -98,7 +98,7 @@ export default function BudgetToolbar() {
 
         <Drawer
           variant="permanent"
-          className="hidden *:box-border *:w-60 sm:block"
+          className="hidden *:box-border *:w-60 md:block"
           data-testid="desktopDrawer"
           open={!mobileOpen}
         >

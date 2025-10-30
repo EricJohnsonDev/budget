@@ -75,67 +75,75 @@ export default function Home() {
   return (
     <Box>
       <Stack spacing={2}>
-        <ToggleButtonGroup
-          color="primary"
-          value={searchFilters}
-          onChange={handleSearchFilter}
-          aria-label="view filter"
-        >
-          <ToggleButton value="date" aria-label="date filter">
-            Date
-          </ToggleButton>
-          <ToggleButton value="category" aria-label="category filter">
-            Category
-          </ToggleButton>
-          <ToggleButton value="amount" aria-label="amount filter">
-            Amount
-          </ToggleButton>
-          <ToggleButton value="search" aria-label="search filter">
-            Search
-          </ToggleButton>
-        </ToggleButtonGroup>
-
-        <ToggleButtonGroup
-          color="primary"
-          exclusive
-          value={viewFilters}
-          onChange={handleViewFilter}
-          aria-label="report style filter"
-        >
-          <ToggleButton value="dashboard" aria-label="dashboard view filter">
-            Dashboard
-          </ToggleButton>
-          <ToggleButton value="table" aria-label="table view filter">
-            Table
-          </ToggleButton>
-        </ToggleButtonGroup>
+        <Stack spacing={{ xs: 2, sm: 4 }} direction={{ sm: "row" }}>
+          <ToggleButtonGroup
+            color="primary"
+            value={searchFilters}
+            onChange={handleSearchFilter}
+            aria-label="view filter"
+          >
+            <ToggleButton value="date" aria-label="date filter">
+              Date
+            </ToggleButton>
+            <ToggleButton value="category" aria-label="category filter">
+              Category
+            </ToggleButton>
+            <ToggleButton value="amount" aria-label="amount filter">
+              Amount
+            </ToggleButton>
+            <ToggleButton value="search" aria-label="search filter">
+              Search
+            </ToggleButton>
+          </ToggleButtonGroup>
+          <ToggleButtonGroup
+            color="primary"
+            exclusive
+            value={viewFilters}
+            onChange={handleViewFilter}
+            aria-label="report style filter"
+          >
+            <ToggleButton value="dashboard" aria-label="dashboard view filter">
+              Dashboard
+            </ToggleButton>
+            <ToggleButton value="table" aria-label="table view filter">
+              Table
+            </ToggleButton>
+          </ToggleButtonGroup>
+        </Stack>
 
         <form
-          className="relative max-w-4xl rounded-2xl border-2 p-2"
+          className="@container relative max-w-4xl rounded-2xl border-1 p-3"
           id="filterForm"
           data-testid="filterForm"
         >
-          <DateFilter visible={searchFilters.includes("date")} />
-          <CategoryFilter visible={searchFilters.includes("category")} />
-          <AmountFilter visible={searchFilters.includes("amount")} />
-          <SearchFilter visible={searchFilters.includes("search")} />
+          <Stack spacing={2} className="!pb-18">
+            <DateFilter visible={searchFilters.includes("date")} />
+            <CategoryFilter visible={searchFilters.includes("category")} />
+            <AmountFilter visible={searchFilters.includes("amount")} />
+            <SearchFilter visible={searchFilters.includes("search")} />
 
-          <Button
-            hidden={rows && rows.length === 0}
-            onClick={() => clearDisplayedData()}
-          >
-            <Icon>clear</Icon>
-            Clear results
-          </Button>
-
+          </Stack>
+          <Stack direction={"row"}>
+            <Button
+              hidden={rows && rows.length === 0}
+              onClick={() => clearDisplayedData()}
+              className="!absolute !bottom-0"
+            >
+              <Icon>clear</Icon>
+              Clear results
+            </Button>
           <Button
             onClick={() => submitFormTest()}
-            className="!absolute top-2 right-2 h-14"
+            className="!absolute !right-2 !bottom-2 h-14"
             variant="contained"
             data-testid="searchButton"
           >
             <Icon>search</Icon>
+              <span className="hidden @sm:block">
+                Search with filters
+              </span>
           </Button>
+          </Stack>
         </form>
         {rows && rows.length > 0 && (
           <ViewTable
