@@ -1,6 +1,8 @@
 import { Box } from "@mui/material";
 import type { Tx_expenses } from "~/partials/models";
 import DataCard from "./reporting/dataCard";
+import ChartAmountByCategory from "./reporting/chartAmountByCategory";
+import ExpensesByCategory from "./reporting/expensesByCategory";
 
 interface Props {
   visible: boolean;
@@ -46,13 +48,11 @@ export default function Dashboard({ visible, rows }: Props) {
         <DataCard
           title={"Total Expenses"}
           value={`$${calcTotalExpenses(rows)}`}
-          interval={"(Interval goes here)"}
-          trend={"neutral"}
-          data={[
-            100, 200, 300, 400, 500, 400, 300, 400, 500, 600, 700, 800, 900,
-            1000,
-          ]}
         ></DataCard>
+        <DataCard title="Expenses by category">
+          <ExpensesByCategory expenses={rows}></ExpensesByCategory>
+        </DataCard>
+        <ChartAmountByCategory></ChartAmountByCategory>
       </Box>
     );
   }

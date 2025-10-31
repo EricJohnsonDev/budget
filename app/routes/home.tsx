@@ -121,7 +121,6 @@ export default function Home() {
             <CategoryFilter visible={searchFilters.includes("category")} />
             <AmountFilter visible={searchFilters.includes("amount")} />
             <SearchFilter visible={searchFilters.includes("search")} />
-
           </Stack>
           <Stack direction={"row"}>
             <Button
@@ -132,17 +131,15 @@ export default function Home() {
               <Icon>clear</Icon>
               Clear results
             </Button>
-          <Button
-            onClick={() => submitFormTest()}
-            className="!absolute !right-2 !bottom-2 h-14"
-            variant="contained"
-            data-testid="searchButton"
-          >
-            <Icon>search</Icon>
-              <span className="hidden @sm:block">
-                Search with filters
-              </span>
-          </Button>
+            <Button
+              onClick={() => submitFormTest()}
+              className="!absolute !right-2 !bottom-2 h-14"
+              variant="contained"
+              data-testid="searchButton"
+            >
+              <Icon>search</Icon>
+              <span className="hidden @sm:block">Search with filters</span>
+            </Button>
           </Stack>
         </form>
         {rows && rows.length > 0 && (
