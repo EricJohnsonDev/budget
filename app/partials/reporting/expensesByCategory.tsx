@@ -114,8 +114,8 @@ export default function ExpensesByCategory({ expenses }: Props) {
   return (
     <List disablePadding>
       {Array.from(sumExpensesByCategory(expenses).values()).map((category) => (
-        <Box>
-          <ListItem key={category.name} disableGutters>
+        <Box key={category.name}>
+          <ListItem disableGutters>
             <ListItemButton onClick={() => handleClick(category.name)}>
               {isOpen.get(category.name) ? <ExpandLess /> : <ExpandMore />}
               <ListItemText>
@@ -126,7 +126,7 @@ export default function ExpensesByCategory({ expenses }: Props) {
           <Collapse in={isOpen.get(category.name)} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
               {Array.from(category.subcategory.values()).map((s) => (
-                <ListItemText>
+                <ListItemText key={s.name}>
                   {s.name} | {formatCentAmount(s.amount)}
                 </ListItemText>
               ))}
