@@ -1,58 +1,90 @@
-import { Box } from "@mui/material";
-import type { Tx_expenses } from "~/partials/models";
+import { Box, Stack } from "@mui/material";
+import type { categoryData, subcategoryData, Tx_expenses } from "~/partials/models";
 import DataCard from "./reporting/dataCard";
 import ChartAmountByCategory from "./reporting/chartAmountByCategory";
 import ExpensesByCategory from "./reporting/expensesByCategory";
+import { convertAmountToCents, formatCentAmount } from "~/utilities/currencyFormat";
 
 interface Props {
   visible: boolean;
   rows: Tx_expenses[];
 }
 
-export default function Dashboard({ visible, rows }: Props) {
-  const calcTotalExpenses = (expensesIn: Tx_expenses[]) => {
-    let result = 0;
+const calcTotalExpenses = (expensesIn: Tx_expenses[]) => {
+  let result = 0;
 
-    for (let i = 0; i < expensesIn.length; i++) {
-      const amtAry = convertAmountToCents(expensesIn[i].Amount);
-      let dollarAmount = parseInt(amtAry[0]);
-      let centAmount = parseInt(amtAry[1]);
+  for (let i = 0; i < expensesIn.length; i++) {
+    result += convertAmountToCents(expensesIn[i].Amount);
+  }
 
-      if (dollarAmount < 0) {
-        centAmount *= -1;
+  return formatCentAmount(result);
+};
+
+const calcExpensesByCategory = (expensesIn: Tx_expenses[]) => {
+  let result = new Map<String, categoryData>();
+
+  for (var expense of expensesIn) {
+    let expenseCentAmount = convertAmountToCents(expense.Amount);
+
+    // Default subcategory
+    let updatedSubcategory = new Map<string, subcategoryData>();
+    let updatedSubcategoryData = {
+      name: expense.Subcategory,
+      amount: expenseCentAmount,
+    };
+    updatedSubcategory.set(expense.Subcategory, updatedSubcategoryData);
+
+    // Default category
+    let updatedCategoryData = {
+      name: expense.Category,
+      amount: expenseCentAmount,
+      subcategory: updatedSubcategory,
+    };
+
+    // Update existing category
+    if (result.has(expense.Category)) {
+      // @ts-expect-error
+      updatedCategoryData = result.get(expense.Category);
+      updatedCategoryData.amount += expenseCentAmount;
+
+      // Update existing subcategory
+      if (updatedCategoryData.subcategory.has(expense.Subcategory)) {
+        // @ts-expect-error
+        updatedSubcategoryData = updatedCategoryData.subcategory.get(
+          expense.Subcategory,
+        );
+        updatedSubcategoryData.amount += expenseCentAmount;
       }
 
-      result = result + dollarAmount * 100 + centAmount;
+      updatedCategoryData.subcategory.set(
+        expense.Subcategory,
+        updatedSubcategoryData,
+      );
+    } else {
+      // Add new category
+      result.set(expense.Category, updatedCategoryData);
     }
+  }
 
-    return (result / 100).toString();
-  };
+  return Array.from(result.values());
+};
 
-  const convertAmountToCents = (amount: string) => {
-    let trimmedAmt = amount
-      .replace(")", "")
-      .replace("(", "-")
-      .replace("$", "")
-      .replace(",", "");
-
-    let formattedAmt = trimmedAmt.split(".");
-    let dollars = formattedAmt[0];
-    let cents = formattedAmt[1];
-
-    return [dollars, cents];
-  };
-
+export default function Dashboard({ visible, rows }: Props) {
   if (visible) {
     return (
       <Box data-testid="dashboardOuterBox">
-        <DataCard
-          title={"Total Expenses"}
-          value={`$${calcTotalExpenses(rows)}`}
-        ></DataCard>
-        <DataCard title="Expenses by category">
-          <ExpensesByCategory expenses={rows}></ExpensesByCategory>
-        </DataCard>
-        <ChartAmountByCategory></ChartAmountByCategory>
+        <Stack spacing={2}>
+          <DataCard
+            title={"Total Expenses"}
+            value={`${calcTotalExpenses(rows)}`}
+          ></DataCard>
+          <Stack direction={"row"}>
+            <DataCard title="Expenses by category">
+              <ExpensesByCategory expenses={calcExpensesByCategory(rows)}></ExpensesByCategory>
+            </DataCard>
+            <ChartAmountByCategory></ChartAmountByCategory>
+          </Stack>
+        </Stack>
       </Box>
     );
   }
