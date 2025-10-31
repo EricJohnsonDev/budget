@@ -1,9 +1,16 @@
 import { Box, Stack } from "@mui/material";
-import type { categoryData, subcategoryData, Tx_expenses } from "~/partials/models";
+import type {
+  categoryData,
+  subcategoryData,
+  Tx_expenses,
+} from "~/partials/models";
 import DataCard from "./reporting/dataCard";
 import ChartAmountByCategory from "./reporting/chartAmountByCategory";
 import ExpensesByCategory from "./reporting/expensesByCategory";
-import { convertAmountToCents, formatCentAmount } from "~/utilities/currencyFormat";
+import {
+  convertAmountToCents,
+  formatCentAmount,
+} from "~/utilities/currencyFormat";
 
 interface Props {
   visible: boolean;
@@ -78,11 +85,21 @@ export default function Dashboard({ visible, rows }: Props) {
             title={"Total Expenses"}
             value={`${calcTotalExpenses(rows)}`}
           ></DataCard>
-          <Stack direction={"row"}>
+          <Stack spacing={2} direction={{ sm: "row" }}>
             <DataCard title="Expenses by category">
-              <ExpensesByCategory expenses={calcExpensesByCategory(rows)}></ExpensesByCategory>
+              <ExpensesByCategory
+                expenses={calcExpensesByCategory(rows).sort((a, b) =>
+                  a.name.localeCompare(b.name),
+                )}
+              ></ExpensesByCategory>
             </DataCard>
-            <ChartAmountByCategory></ChartAmountByCategory>
+            <DataCard title="Expenses by category">
+              <ChartAmountByCategory
+                expenses={calcExpensesByCategory(rows).sort(
+                  (a, b) => b.amount - a.amount,
+                )}
+              ></ChartAmountByCategory>
+            </DataCard>
           </Stack>
         </Stack>
       </Box>

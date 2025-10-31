@@ -1,9 +1,8 @@
 export const formatCentAmount = (centsIn: number): string => {
-  let dollars = Math.floor(centsIn / 100);
-  let cents = centsIn % 100;
-  let result = `$${dollars}.${cents}`;
+  let dollars = centsIn.toString().slice(0, -2);
+  let cents = centsIn.toString().slice(-2);
 
-  return result;
+  return `$${dollars}.${cents}`;
 };
 
 export const convertAmountToCents = (amount: string) => {
