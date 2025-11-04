@@ -43,7 +43,7 @@ export default function ExpensesByCategory({ expenses }: Props) {
             </ListItemButton>
           </ListItem>
           <Collapse in={isOpen.get(category.name)} timeout="auto" unmountOnExit>
-            <List component="div" disablePadding>
+            <List disablePadding>
               {Array.from(category.subcategory.values()).map((subcategory) => (
                 <ListItemText key={subcategory.name} inset>
                   {subcategory.name} | {formatCentAmount(subcategory.amount)}
