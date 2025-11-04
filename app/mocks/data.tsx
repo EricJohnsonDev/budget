@@ -1,4 +1,5 @@
 export const createTestRow = (
+  ID: number,
   date: string,
   amount: string,
   institution: string,
@@ -7,6 +8,7 @@ export const createTestRow = (
   comment: string,
 ) => {
   return {
+    ID: ID,
     Date: date,
     Amount: amount,
     Institution: institution,
@@ -36,6 +38,7 @@ export const createIncrementalTestRows = (
 
     result.push(
       createTestRow(
+        i,
         newDate,
         String(amt.toFixed(2)),
         institution,
